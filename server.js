@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cors = require('cors')
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -11,6 +12,10 @@ const messageRoutes = require('./routes/messageRoutes.js');
 const chefRoutes = require('./routes/chefRoutes.js');
 
 const app = express();
+
+app.use(cors({
+    origin: "http://localhost:3000"
+}))
 
 app.use(express.json());
 
