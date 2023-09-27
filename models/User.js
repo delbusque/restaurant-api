@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+require('dotenv').config();
+const CryptoJS = require("crypto-js");
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -30,7 +32,17 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
-userSchema.statics.signup = async function (email, password) {
+userSchema.statics.signup = async function (email, encryptedPassword) {
+
+    const secretKey = process.env.REACT_APP_SECRET_KEY ? process.env.REACT_APP_SECRET_KEY : '123456'
+
+    const decrypt = (encryptedText) => {
+        const bytes = CryptoJS.AES.decrypt(encryptedText, secretKey)
+        const plainText = bytes.toString(CryptoJS.enc.Utf8)
+        return plainText
+    }
+
+    const password = decrypt(encryptedPassword)
 
     if (!email || !password) {
         throw Error('All fields must be filled !')
@@ -53,7 +65,17 @@ userSchema.statics.signup = async function (email, password) {
     return user;
 }
 
-userSchema.statics.login = async function (email, password) {
+userSchema.statics.login = async function (email, encryptedPassword) {
+
+    const secretKey = process.env.REACT_APP_SECRET_KEY ? process.env.REACT_APP_SECRET_KEY : '123456'
+
+    const decrypt = (encryptedText) => {
+        const bytes = CryptoJS.AES.decrypt(encryptedText, secretKey)
+        const plainText = bytes.toString(CryptoJS.enc.Utf8)
+        return plainText
+    }
+
+    const password = decrypt(encryptedPassword)
 
     if (!email || !password) {
         throw Error('All fields must be filled !')
