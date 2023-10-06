@@ -36,10 +36,10 @@ userSchema.statics.signup = async function (email, encryptedPassword) {
 
     const secretKey = process.env.REACT_APP_SECRET_KEY ? process.env.REACT_APP_SECRET_KEY : '123456'
 
-    const decrypt = (encryptedText) => {
-        const bytes = CryptoJS.AES.decrypt(encryptedText, secretKey)
-        const plainText = bytes.toString(CryptoJS.enc.Utf8)
-        return plainText
+    function decrypt(word) {
+        let decData = CryptoJS.enc.Base64.parse(word).toString(CryptoJS.enc.Utf8)
+        let bytes = CryptoJS.AES.decrypt(decData, secretKey).toString(CryptoJS.enc.Utf8)
+        return JSON.parse(bytes)
     }
 
     const password = decrypt(encryptedPassword)
@@ -48,7 +48,8 @@ userSchema.statics.signup = async function (email, encryptedPassword) {
         throw Error('All fields must be filled !')
     }
 
-    if (!validator.isEmail(email) || !validator.isStrongPassword(password)) {
+    if (!validator.isEmail(email) || !validator.isStrongPassword(password,
+        { minLength: 4, minLowercase: 0, minUppercase: 0, minNumbers: 0, minSymbols: 0 })) {
         throw Error('Invalid email or password format !');
     }
 
@@ -69,10 +70,10 @@ userSchema.statics.login = async function (email, encryptedPassword) {
 
     const secretKey = process.env.REACT_APP_SECRET_KEY ? process.env.REACT_APP_SECRET_KEY : '123456'
 
-    const decrypt = (encryptedText) => {
-        const bytes = CryptoJS.AES.decrypt(encryptedText, secretKey)
-        const plainText = bytes.toString(CryptoJS.enc.Utf8)
-        return plainText
+    function decrypt(word) {
+        let decData = CryptoJS.enc.Base64.parse(word).toString(CryptoJS.enc.Utf8)
+        let bytes = CryptoJS.AES.decrypt(decData, secretKey).toString(CryptoJS.enc.Utf8)
+        return JSON.parse(bytes)
     }
 
     const password = decrypt(encryptedPassword)
