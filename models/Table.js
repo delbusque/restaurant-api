@@ -7,6 +7,10 @@ const tableSchema = new Schema({
         type: String,
         required: true
     },
+    type: {
+        type: String,
+        required: true
+    },
     paid: {
         type: Boolean,
         required: true
