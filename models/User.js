@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    role: {
+        type: Number,
+        required: true,
+    },
     firstName: {
         type: String,
         required: false
@@ -62,7 +66,7 @@ userSchema.statics.signup = async function (email, encryptedPassword) {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
-    const user = await this.create({ email, password: hash, firstName: '', lastName: '', phone: "" });
+    const user = await this.create({ email, password: hash, role: 401, firstName: '', lastName: '', phone: "" });
     return user;
 }
 
