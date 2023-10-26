@@ -33,17 +33,17 @@ const itemSchema = new Schema({
         default: function () {
             if (this.family === 'drinks') {
                 if (this.quantity < 1) {
-                    return 'gr';
+                    return 'мл';
                 }
                 else {
-                    return 'l';
+                    return 'л';
                 }
             } else if (this.family === 'food') {
                 if (this.quantity < 1) {
-                    return 'gr';
+                    return 'гр';
                 }
                 else {
-                    return 'kg';
+                    return 'кг';
                 }
             }
         }
