@@ -26,20 +26,20 @@ const itemSchema = new Schema({
     },
     quantity: {
         type: Number,
-        required: true
+        required: true,
     },
     quantityType: {
         type: String,
         default: function () {
             if (this.family === 'drinks') {
-                if (this.quantity < 1) {
+                if (this.quantity < 1000) {
                     return 'мл';
                 }
                 else {
                     return 'л';
                 }
             } else if (this.family === 'food') {
-                if (this.quantity < 1) {
+                if (this.quantity < 1000) {
                     return 'гр';
                 }
                 else {
