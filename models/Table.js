@@ -32,6 +32,10 @@ const tableSchema = new Schema({
     },
     reserved: {
         type: Boolean
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 });
 
