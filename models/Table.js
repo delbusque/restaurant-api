@@ -36,6 +36,9 @@ const tableSchema = new Schema({
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+    },
+    ownerId: {
+        type: String
     }
 });
 
