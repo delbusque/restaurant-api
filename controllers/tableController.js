@@ -21,7 +21,34 @@ const getOneTable = async (req, res) => {
     }
 }
 
+const createTable = async (req, res) => {
+    const { type } = req.body
+
+    const tables = await Table.find({ type }).exec();
+    console.log(tables.length);
+
+    if (type === 'table') {
+
+        try {
+            const newTable = await Table.create({ number: tables.length + 1, type, opened: false, paid: false, orders: [], bill: 0 })
+            res.status(200).json(newTable);
+        } catch (error) {
+            res.status(400).json({ error: error.message })
+        }
+
+    } else if (type === 'away') {
+
+        try {
+            const newTable = await Table.create({ number: tables.length + 101, type, opened: false, paid: false, orders: [], bill: 0 })
+            res.status(200).json(newTable);
+        } catch (error) {
+            res.status(400).json({ message: error.message })
+        }
+    }
+}
+
 module.exports = {
     getAllTables,
-    getOneTable
+    getOneTable,
+    createTable
 }

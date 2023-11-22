@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const tableSchema = new Schema({
-    name: {
+    number: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     type: {
         type: String,
