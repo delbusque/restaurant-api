@@ -47,8 +47,31 @@ const createTable = async (req, res) => {
     }
 }
 
+const editTable = async (req, res) => {
+    const { id } = req.params;
+
+    const editedTable = { ...req.body };
+
+    console.log(id);
+    console.log(editedTable);
+
+
+    try {
+        const updatedTable = await Table.findByIdAndUpdate(id, editedTable.table, { new: true });
+
+        if (!updatedTable) {
+            res.status(400).json({ error: 'No such item in stock!' })
+        }
+        res.status(200).json(updatedTable);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+
 module.exports = {
     getAllTables,
     getOneTable,
-    createTable
+    createTable,
+    editTable
 }
