@@ -13,6 +13,8 @@ const chefRoutes = require('./routes/chefRoutes.js');
 
 const app = express();
 
+let test;
+
 app.use(cors({
     // origin: "https://ourestaurant.onrender.com"
     origin: "http://localhost:3000"
