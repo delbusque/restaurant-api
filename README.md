@@ -16,7 +16,7 @@ This server is for a web-based Restaurant Management System.
 ## Technologies Used
 
 - **Frontend**: React.js
-- **Backend**: Node.js, Express.js
+- **Backend**: Express.js
 - **Database**: MongoDB
 - **ODM**: Mongoose
 
