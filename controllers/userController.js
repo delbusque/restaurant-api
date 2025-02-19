@@ -58,7 +58,7 @@ const editUser = async (req, res) => {
     }
 
     if (emptyFields.length > 0) {
-        return res.status(400).json({ error: 'All fields should be filled !', emptyFields })
+        return res.status(400).json({ error: 'Всички полета трябва да бъдат попълнени !', emptyFields })
     }
 
     try {

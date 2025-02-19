@@ -61,15 +61,15 @@ const addNewStockItem = async (req, res) => {
     const exists = await Item.findOne({ name });
 
     if (exists) {
-        return res.status(400).json({ error: 'Already an item with such name in stock !', emptyFields, negZero })
+        return res.status(400).json({ error: 'Вече има артикул с това име !', emptyFields, negZero })
     }
 
     if (emptyFields.length > 0) {
-        return res.status(400).json({ error: 'All fields should be filled !', emptyFields, negZero })
+        return res.status(400).json({ error: 'Попълни задължителните полета !', emptyFields, negZero })
     }
 
     if (price <= 0 || quantity <= 0) {
-        return res.status(400).json({ error: 'Price and quantity can not be negative or zero !', negZero })
+        return res.status(400).json({ error: 'Въведи валидни цена и количество !', negZero })
     }
 
     try {
@@ -118,7 +118,7 @@ const editStockItem = async (req, res) => {
     }
 
     if (emptyFields.length > 0) {
-        return res.status(400).json({ error: 'All fields should be filled !', emptyFields, negZero })
+        return res.status(400).json({ error: 'Попълни задължителните полета !', emptyFields, negZero })
     }
 
     if (price <= 0 || quantity <= 0) {
