@@ -49,18 +49,18 @@ userSchema.statics.signup = async function (email, encryptedPassword) {
     const password = decrypt(encryptedPassword)
 
     if (!email || !password) {
-        throw Error('All fields must be filled !')
+        throw Error('Всички полета трябва да бъдат попълнени !')
     }
 
     if (!validator.isEmail(email) || !validator.isStrongPassword(password,
         { minLength: 4, minLowercase: 0, minUppercase: 0, minNumbers: 0, minSymbols: 0 })) {
-        throw Error('Invalid email or password format !');
+        throw Error('Невалиден email или парола !');
     }
 
     const exists = await this.findOne({ email });
 
     if (exists) {
-        throw Error('Already a user with that email !')
+        throw Error('Невалиден email или парола !')
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -83,19 +83,19 @@ userSchema.statics.login = async function (email, encryptedPassword) {
     const password = decrypt(encryptedPassword)
 
     if (!email || !password) {
-        throw Error('All fields must be filled !')
+        throw Error('Всички полета трябва да бъдат попълнени !')
     }
 
     const user = await this.findOne({ email });
 
     if (!user) {
-        throw Error('Login credentials do not match !')
+        throw Error('Невалиден email или парола !')
     }
 
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-        throw Error('Login credentials do not match !')
+        throw Error('Невалиден email или парола !')
     }
 
     return user;
