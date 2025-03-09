@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    name: {
+        type: String,
+        required: true
+    },
     firstName: {
         type: String,
         required: false
@@ -36,7 +40,7 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
-userSchema.statics.signup = async function (email, encryptedPassword) {
+userSchema.statics.signup = async function (email, encryptedPassword, name) {
 
     const secretKey = process.env.REACT_APP_SECRET_KEY ? process.env.REACT_APP_SECRET_KEY : '123456'
 
@@ -48,7 +52,7 @@ userSchema.statics.signup = async function (email, encryptedPassword) {
 
     const password = decrypt(encryptedPassword)
 
-    if (!email || !password) {
+    if (!email || !password || !name) {
         throw Error('Всички полета трябва да бъдат попълнени !')
     }
 
@@ -66,7 +70,7 @@ userSchema.statics.signup = async function (email, encryptedPassword) {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
-    const user = await this.create({ email, password: hash, role: 401, firstName: '', lastName: '', phone: "" });
+    const user = await this.create({ email, password: hash, role: 402, name, firstName: '', lastName: '', phone: "" });
     return user;
 }
 
