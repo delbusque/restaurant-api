@@ -24,7 +24,7 @@ const loginUser = async (req, res) => {
 
         const token = createToken(user._id);
 
-        res.status(200).json({ email, token, role: user.role, firstName: user.firstName, lastName: user.lastName, phone: user.phone, id: user._id })
+        res.status(200).json({ email, token, role: user.role, firstName: user.firstName, lastName: user.lastName, phone: user.phone, id: user._id, name: user.name })
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
@@ -32,13 +32,13 @@ const loginUser = async (req, res) => {
 }
 
 const signupUser = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
     try {
-        const user = await User.signup(email, password);
+        const user = await User.signup(email, password, name);
         const token = createToken(user._id);
 
-        res.status(200).json({ email, token, role: 402, id: user._id });
+        res.status(200).json({ email, token, role: 402, id: user._id, name });
     } catch (error) {
 
         res.status(400).json({ error: error.message })
@@ -46,11 +46,11 @@ const signupUser = async (req, res) => {
 }
 
 const editUser = async (req, res) => {
-    const { email, firstName, lastName, phone } = req.body;
+    const { email, phone } = req.body;
 
     const emptyFields = [];
-    !firstName && emptyFields.push('firstName');
-    !lastName && emptyFields.push('lastName');
+    // !firstName && emptyFields.push('firstName');
+    // !lastName && emptyFields.push('lastName');
     !phone && emptyFields.push('phone');
 
     if (!User.find({ email: email })) {
@@ -62,7 +62,7 @@ const editUser = async (req, res) => {
     }
 
     try {
-        const updatedUser = await User.findOneAndUpdate({ email: email }, { firstName, lastName, phone }, { new: true });
+        const updatedUser = await User.findOneAndUpdate({ email: email }, { phone }, { new: true });
 
         if (!updatedUser) {
             res.status(400).json({ error: 'No such User !' })
@@ -76,9 +76,45 @@ const editUser = async (req, res) => {
 
 }
 
+const editRole = async (req, res) => {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    try {
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        user.role = role;
+        await user.save();
+
+        res.status(200).json({ role: user.role });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const deleteUser = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user = await User.findByIdAndDelete(id);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 module.exports = {
     loginUser,
     signupUser,
     getAllUsers,
-    editUser
-}
+    editUser,
+    editRole,
+    deleteUser
+};
