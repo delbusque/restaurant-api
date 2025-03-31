@@ -48,18 +48,9 @@ const signupUser = async (req, res) => {
 const editUser = async (req, res) => {
     const { email, phone, name, lastName } = req.body;
 
-    const emptyFields = [];
-    // !firstName && emptyFields.push('firstName');
-    // !lastName && emptyFields.push('lastName');
-    // !phone && emptyFields.push('phone');
-
     if (!User.find({ email: email })) {
         res.status(400).json({ error: 'No such user to edit !' })
     }
-
-    // if (emptyFields.length > 0) {
-    //     return res.status(400).json({ error: 'Всички полета трябва да бъдат попълнени !', emptyFields })
-    // }
 
     try {
         const updatedUser = await User.findOneAndUpdate({ email: email }, { phone, name, lastName }, { new: true });
@@ -68,7 +59,7 @@ const editUser = async (req, res) => {
             res.status(400).json({ error: 'No such User !' })
         }
 
-        res.status(200).json(updatedUser);
+        res.status(200).json({ email, role: updatedUser.role, firstName: updatedUser.firstName, lastName: updatedUser.lastName, phone: updatedUser.phone, id: updatedUser._id, name: updatedUser.name });
 
     } catch (error) {
         res.status(400).json({ error: error.message });
