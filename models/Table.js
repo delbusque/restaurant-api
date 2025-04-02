@@ -8,6 +8,9 @@ const tableSchema = new Schema({
         required: true,
         unique: true
     },
+    clientName: {
+        type: String
+    },
     type: {
         type: String,
         required: true

@@ -46,29 +46,20 @@ const signupUser = async (req, res) => {
 }
 
 const editUser = async (req, res) => {
-    const { email, phone } = req.body;
-
-    const emptyFields = [];
-    // !firstName && emptyFields.push('firstName');
-    // !lastName && emptyFields.push('lastName');
-    !phone && emptyFields.push('phone');
+    const { email, phone, name, lastName } = req.body;
 
     if (!User.find({ email: email })) {
         res.status(400).json({ error: 'No such user to edit !' })
     }
 
-    if (emptyFields.length > 0) {
-        return res.status(400).json({ error: 'Всички полета трябва да бъдат попълнени !', emptyFields })
-    }
-
     try {
-        const updatedUser = await User.findOneAndUpdate({ email: email }, { phone }, { new: true });
+        const updatedUser = await User.findOneAndUpdate({ email: email }, { phone, name, lastName }, { new: true });
 
         if (!updatedUser) {
             res.status(400).json({ error: 'No such User !' })
         }
 
-        res.status(200).json(updatedUser);
+        res.status(200).json({ email, role: updatedUser.role, firstName: updatedUser.firstName, lastName: updatedUser.lastName, phone: updatedUser.phone, id: updatedUser._id, name: updatedUser.name });
 
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -76,9 +67,45 @@ const editUser = async (req, res) => {
 
 }
 
+const editRole = async (req, res) => {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    try {
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        user.role = role;
+        await user.save();
+
+        res.status(200).json({ role: user.role });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const deleteUser = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user = await User.findByIdAndDelete(id);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 module.exports = {
     loginUser,
     signupUser,
     getAllUsers,
-    editUser
-}
+    editUser,
+    editRole,
+    deleteUser
+};

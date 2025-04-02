@@ -28,6 +28,10 @@ const itemSchema = new Schema({
         type: Number,
         required: true,
     },
+    fryer: {
+        type: Boolean,
+        default: false
+    },
     quantityType: {
         type: String,
         default: function () {
