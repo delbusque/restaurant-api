@@ -19,6 +19,18 @@ const chefOrderSchema = new Schema({
         type: String,
         required: true,
     },
+    family: {
+        type: String,
+        required: true,
+    },
+    type: {
+        type: String,
+        required: true,
+    },
+    fryer: {
+        type: Boolean,
+        required: true,
+    },
     ingredients: {
         type: Array,
     },
