@@ -137,6 +137,35 @@ const editStockItem = async (req, res) => {
     }
 }
 
+const updateStock = async (req, res) => {
+    const { id } = req.params;
+    const { stock } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Invalid item ID' });
+    }
+
+    if (typeof stock !== 'number' || stock < 0) {
+        return res.status(400).json({ error: 'Stock must be a non-negative number' });
+    }
+
+    try {
+        const item = await Item.findOneAndUpdate(
+            { _id: id },
+            { stock },
+            { new: true }
+        );
+
+        if (!item) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
+
+        res.status(200).json(item);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
     getAllDrinks,
     getAllFood,
@@ -144,5 +173,6 @@ module.exports = {
     getItemsByType,
     addNewStockItem,
     deleteStockItem,
-    editStockItem
+    editStockItem,
+    updateStock
 }
