@@ -32,6 +32,10 @@ const itemSchema = new Schema({
         type: Boolean,
         default: false
     },
+    stock: {
+        type: Number,
+        default: 0
+    },
     quantityType: {
         type: String,
         default: function () {
