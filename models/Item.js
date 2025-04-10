@@ -34,7 +34,6 @@ const itemSchema = new Schema({
     },
     stock: {
         type: Number,
-        default: 0
     },
     quantityType: {
         type: String,
